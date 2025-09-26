@@ -74,29 +74,34 @@ with col1:
         help="Basic statistics (e.g., averages, fixed formulas) without learned models.",
     )
 
+st.markdown("---")
+step1_unable_to_verify = st.checkbox("I am not able to verify this", key="step1_unable_to_verify")
+
 answers["non_ai_categories"] = {
     "none_applies": c_none,
     "basic_data_processing_tools": c_basic,
     "classical_heuristic_based": c_heur,
     "simple_prediction_systems": c_simple_pred,
+    "unable_to_verify": step1_unable_to_verify,
 }
 
 non_ai_selected = any([c_basic, c_heur, c_simple_pred])
 
 
 # Early exit option
-if non_ai_selected:
-    decision_badge("Result", "Likely not an AI system")
-    st.markdown(
-        "- You indicated at least one NON‑AI category.\n"
-        "- These solutions follow predefined human rules and do not infer outputs using AI models."
-    )
-    export_json({"result": "Likely not an AI system", "reason": "Selected NON-AI category", "answers": answers})
-    st.stop()
+if not step1_unable_to_verify:
+    if non_ai_selected:
+        decision_badge("Result", "Likely not an AI system")
+        st.markdown(
+            "- You indicated at least one NON‑AI category.\n"
+            "- These solutions follow predefined human rules and do not infer outputs using AI models."
+        )
+        export_json({"result": "Likely not an AI system", "reason": "Selected NON-AI category", "answers": answers})
+        st.stop()
 
-if not c_none:
-    st.info("Select an option to continue the assessment.")
-    st.stop()
+    if not c_none:
+        st.info("Select an option to continue the assessment.")
+        st.stop()
 
 st.divider()
 
@@ -123,6 +128,14 @@ if tech_ml_selected:
 tech_logic = st.checkbox("Yes, using Logic‑ and Knowledge‑Based Techniques")
 none_selected = st.checkbox("No, None of these techniques was used")
 
+st.markdown("---")
+step2_unable_to_verify = st.checkbox("I am not able to verify this", key="step2_unable_to_verify")
+
+if step2_unable_to_verify and (tech_ml_selected or tech_logic or none_selected or selected_ml):
+    st.warning("Remove other selections to continue with the 'I am not able to verify this' option.")
+
+answers.setdefault("ai_techniques", {})
+
 if none_selected and (tech_ml_selected or tech_logic or selected_ml):
     st.warning("Remove other selections if you choose 'None of these techniques is used'.")
 
@@ -131,7 +144,120 @@ answers["ai_techniques"] = {
     "ml_techniques": selected_ml,
     "logic_knowledge_based": tech_logic,
     "none_selected": none_selected,
+    "unable_to_verify": step2_unable_to_verify,
 }
+
+if step2_unable_to_verify:
+    ai_model_knowledge = st.radio(
+        "Do you know if the solution use AI Models?",
+        options=[
+            "Yes it use an AI Model",
+            "No it does not",
+            "I am not sure",
+        ],
+        index=None,
+    )
+    answers["ai_techniques"]["ai_model_knowledge"] = ai_model_knowledge
+
+    if ai_model_knowledge is None:
+        st.info("Select an option to continue the assessment.")
+        st.stop()
+
+    if ai_model_knowledge == "Yes it use an AI Model":
+        decision_badge("Result", "AI system")
+        st.markdown(
+            "- You indicated the solution uses an AI Model.\n"
+            "- It is advisable to seek legal consultation to confirm this assessment."
+        )
+        export_json(
+            {
+                "result": "AI system",
+                "reason": "User confirmed the solution uses an AI Model while unable to verify techniques",
+                "answers": answers,
+            }
+        )
+        st.stop()
+
+    if ai_model_knowledge == "No it does not":
+        decision_badge("Result", "Likely not an AI system")
+        st.markdown(
+            "- You indicated the solution does **not** use an AI Model.\n"
+            "- It is advisable to seek legal consultation to confirm this assessment."
+        )
+        export_json(
+            {
+                "result": "Likely not an AI system",
+                "reason": "User indicated no AI Model usage when unable to verify techniques",
+                "answers": answers,
+            }
+        )
+        st.stop()
+
+    st.markdown("Is the solution generating any of the following?")
+    g_complex_predictions = st.checkbox(
+        "Complex Predictions\nThe system generates estimates about an unknown value (the output) from known values supplied to the system (the input). It uncovers complex correlations between variables to make accurate predictions.",
+        key="g_complex_predictions",
+    )
+    g_recommendations = st.checkbox(
+        "Recommendations\nThe system generates suggestions for specific actions, products, or services to users based on their preferences, behaviors, or other data inputs.",
+        key="g_recommendations",
+    )
+    g_content = st.checkbox(
+        "Content\nThe system generates new material such as text, images, videos, and audio, using Generative Pre-trained Transformer (GPT) technologies, or other generative models, typically Large Language Models.",
+        key="g_content",
+    )
+    g_decisions = st.checkbox(
+        "Decisions\nThe system generates conclusions or choices that fully automate processes that are traditionally handled by human judgement. The decision is produced in the environment surrounding the system without any human intervention.",
+        key="g_decisions",
+    )
+    g_none = st.checkbox("None applies", key="g_none")
+
+    generation_flags = {
+        "complex_predictions": g_complex_predictions,
+        "recommendations": g_recommendations,
+        "content": g_content,
+        "decisions": g_decisions,
+        "none_applies": g_none,
+    }
+    answers["ai_techniques"]["generation_indicators"] = generation_flags
+
+    if g_none and any([g_complex_predictions, g_recommendations, g_content, g_decisions]):
+        st.warning("'None applies' cannot be selected together with other options.")
+        st.stop()
+
+    if not g_none and not any([g_complex_predictions, g_recommendations, g_content, g_decisions]):
+        st.info("Select at least one option to continue the assessment.")
+        st.stop()
+
+    if any([g_complex_predictions, g_recommendations, g_content, g_decisions]):
+        decision_badge("Result", "Likely an AI system")
+        st.markdown(
+            "- Based on your inputs, the solution is **likely an AI system**.\n"
+            "- It is advisable to seek legal consultation to confirm this assessment."
+        )
+        export_json(
+            {
+                "result": "Likely an AI system",
+                "reason": "Selected generation indicators while unsure about AI Model usage",
+                "answers": answers,
+            }
+        )
+        st.stop()
+
+    if g_none:
+        decision_badge("Result", "Likely not an AI system")
+        st.markdown(
+            "- None of the listed generation indicators apply.\n"
+            "- It is advisable to seek legal consultation to confirm this assessment."
+        )
+        export_json(
+            {
+                "result": "Likely not an AI system",
+                "reason": "No generation indicators selected while unsure about AI Model usage",
+                "answers": answers,
+            }
+        )
+        st.stop()
 
 has_any_selection = tech_ml_selected or tech_logic or none_selected
 uses_ai_techniques = tech_ml_selected or tech_logic
