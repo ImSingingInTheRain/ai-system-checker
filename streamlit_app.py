@@ -76,7 +76,9 @@ def inject_custom_css():
         .st-key-g_complex_predictions [data-testid="stCheckbox"],
         .st-key-g_recommendations [data-testid="stCheckbox"],
         .st-key-g_content [data-testid="stCheckbox"],
-        .st-key-g_decisions [data-testid="stCheckbox"] {
+        .st-key-g_decisions [data-testid="stCheckbox"],
+        .st-key-step1_unable_to_verify [data-testid="stCheckbox"],
+        .st-key-step2_unable_to_verify [data-testid="stCheckbox"] {
             padding: 0.85rem 1rem;
             border-radius: 14px;
             border: 1px solid rgba(37, 99, 235, 0.15);
@@ -88,7 +90,9 @@ def inject_custom_css():
         .st-key-g_complex_predictions [data-testid="stCheckbox"]:hover,
         .st-key-g_recommendations [data-testid="stCheckbox"]:hover,
         .st-key-g_content [data-testid="stCheckbox"]:hover,
-        .st-key-g_decisions [data-testid="stCheckbox"]:hover {
+        .st-key-g_decisions [data-testid="stCheckbox"]:hover,
+        .st-key-step1_unable_to_verify [data-testid="stCheckbox"]:hover,
+        .st-key-step2_unable_to_verify [data-testid="stCheckbox"]:hover {
             border-color: rgba(37, 99, 235, 0.35);
             background: rgba(37, 99, 235, 0.08);
             box-shadow: 0 10px 20px rgba(37, 99, 235, 0.08);
@@ -97,14 +101,18 @@ def inject_custom_css():
         .st-key-g_complex_predictions [data-testid="stCheckbox"] > label,
         .st-key-g_recommendations [data-testid="stCheckbox"] > label,
         .st-key-g_content [data-testid="stCheckbox"] > label,
-        .st-key-g_decisions [data-testid="stCheckbox"] > label {
+        .st-key-g_decisions [data-testid="stCheckbox"] > label,
+        .st-key-step1_unable_to_verify [data-testid="stCheckbox"] > label,
+        .st-key-step2_unable_to_verify [data-testid="stCheckbox"] > label {
             gap: 0.25rem;
         }
 
         .st-key-g_complex_predictions [data-testid="stCheckbox"] > label p,
         .st-key-g_recommendations [data-testid="stCheckbox"] > label p,
         .st-key-g_content [data-testid="stCheckbox"] > label p,
-        .st-key-g_decisions [data-testid="stCheckbox"] > label p {
+        .st-key-g_decisions [data-testid="stCheckbox"] > label p,
+        .st-key-step1_unable_to_verify [data-testid="stCheckbox"] > label p,
+        .st-key-step2_unable_to_verify [data-testid="stCheckbox"] > label p {
             margin: 0;
             font-size: 0.92rem;
             color: var(--muted-text);
@@ -114,11 +122,20 @@ def inject_custom_css():
         .st-key-g_complex_predictions [data-testid="stCheckbox"] > label p strong,
         .st-key-g_recommendations [data-testid="stCheckbox"] > label p strong,
         .st-key-g_content [data-testid="stCheckbox"] > label p strong,
-        .st-key-g_decisions [data-testid="stCheckbox"] > label p strong {
+        .st-key-g_decisions [data-testid="stCheckbox"] > label p strong,
+        .st-key-step1_unable_to_verify [data-testid="stCheckbox"] > label p strong,
+        .st-key-step2_unable_to_verify [data-testid="stCheckbox"] > label p strong {
             display: block;
             font-size: 1rem;
             color: var(--primary-text);
             margin-bottom: 0.2rem;
+        }
+
+        .st-key-step1_unable_to_verify [data-testid="stCheckbox"] > label,
+        .st-key-step2_unable_to_verify [data-testid="stCheckbox"] > label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--primary-text);
         }
 
         .stDownloadButton button {
