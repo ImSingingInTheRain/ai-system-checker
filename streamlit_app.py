@@ -95,7 +95,7 @@ if non_ai_selected:
     st.stop()
 
 if not c_none:
-    st.info("Select 'None applies' to continue the assessment.")
+    st.info("Select an option to continue the assessment.")
     st.stop()
 
 st.divider()
