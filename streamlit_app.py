@@ -226,9 +226,10 @@ else:
     rationale.append("Uses AI techniques and not limited to optimization‑only carve‑out.")
 
 # Enrich rationale with optional info
-if answers["inference_autonomy"]["infers_outputs"]:
+inference_autonomy = answers.get("inference_autonomy", {})
+if inference_autonomy.get("infers_outputs"):
     rationale.append("Confirms inference from inputs to outputs.")
-if answers["inference_autonomy"]["varying_autonomy"]:
+if inference_autonomy.get("varying_autonomy"):
     rationale.append("Operates with varying levels of autonomy (may still be human‑in-the-loop).")
 
 # -------- Display result
