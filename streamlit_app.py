@@ -55,13 +55,12 @@ answers = st.session_state.answers
 
 # -------- Step 1 — Negative scope check (non‑AI categories)
 section_header(
-    "Step 1 — Does your solution fall into any NON‑AI categories?",
-    "If any of these are selected, the solution is generally **not** an AI system per your guidance.",
+    "Step 1 — Does your solution fall into any of these categories?",
 )
 
 col1, col2 = st.columns(2)
 with col1:
-    c_none = st.checkbox("None applies", help="Select if none of the NON-AI categories below are relevant.")
+    c_none = st.checkbox("None applies", help="Select if none of the categories below are relevant.")
     c_basic = st.checkbox(
         "Basic data processing tools",
         help="Operate on predefined human instructions; repetitive or rule-based; exactly as programmed.",
@@ -74,8 +73,6 @@ with col1:
         "Simple prediction systems",
         help="Basic statistics (e.g., averages, fixed formulas) without learned models.",
     )
-with col2:
-    st.markdown("> If you select any of the above, you are **not providing an AI system**.")
 
 answers["non_ai_categories"] = {
     "none_applies": c_none,
@@ -86,8 +83,6 @@ answers["non_ai_categories"] = {
 
 non_ai_selected = any([c_basic, c_heur, c_simple_pred])
 
-if c_none and non_ai_selected:
-    st.warning("'None applies' conflicts with selecting a NON-AI category. Please review your choices.")
 
 # Early exit option
 if non_ai_selected:
@@ -107,7 +102,7 @@ st.divider()
 
 # -------- Step 2 — AI model development using AI techniques
 section_header(
-    "Step 2 — Was any component developed using **AI Techniques**?",
+    "Step 2 — Was any component of your solution developed using **AI Techniques**?",
     "Select any techniques used to develop the model components within your solution.",
 )
 
