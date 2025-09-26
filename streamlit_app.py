@@ -103,7 +103,7 @@ st.divider()
 # -------- Step 2 — AI model development using AI techniques
 section_header(
     "Step 2 — Was any component of your solution developed using **AI Techniques**?",
-    "Select any techniques used to develop the model components within your solution.",
+    "This step allows you to confirm if your system uses AI Models, by checking if any of its components was developed using machine learning or logic-and knowledge based techniques.",
 )
 
 tech_ml_selected = st.checkbox("Machine Learning techniques")
