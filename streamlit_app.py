@@ -298,7 +298,7 @@ st.markdown(
     """
     <div style="padding: 1.5rem 1rem 1rem;">
         <p style="text-transform: uppercase; letter-spacing: 0.18em; color: #2563eb; font-weight: 600; margin-bottom: 0.25rem;">
-            EU AI Act Readiness
+            AI SYSTEM CLASSIFICATION TOOL
         </p>
         <h1 style="margin-bottom: 0.75rem;">Is your solution an AI system?</h1>
         <p class="small-muted" style="max-width: 640px;">
