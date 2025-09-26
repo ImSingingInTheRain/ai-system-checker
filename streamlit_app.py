@@ -111,28 +111,32 @@ section_header(
     "Select any techniques used to develop the model components within your solution.",
 )
 
-none_option = "None of these techniques is used"
-tech_ml = st.multiselect(
-    "Machine Learning techniques",
-    options=[
-        "Supervised Learning",
-        "Unsupervised Learning",
-        "Self‑Supervised Learning",
-        "Reinforcement Learning",
-        "Deep Learning",
-        none_option,
-    ],
-)
-
-none_selected = none_option in tech_ml
-selected_ml = [tech for tech in tech_ml if tech != none_option]
-
-if none_selected and selected_ml:
-    st.warning("Remove other selections if you choose 'None of these techniques is used'.")
+tech_ml_selected = st.checkbox("Machine Learning techniques")
+selected_ml = []
+if tech_ml_selected:
+    selected_ml = st.multiselect(
+        "Select the machine learning techniques used",
+        options=[
+            "Supervised Learning",
+            "Unsupervised Learning",
+            "Self‑Supervised Learning",
+            "Reinforcement Learning",
+            "Deep Learning",
+        ],
+    )
 
 tech_logic = st.checkbox("Logic‑ and Knowledge‑Based Techniques")
+none_selected = st.checkbox("None of these techniques is used")
+
+if none_selected and (tech_ml_selected or tech_logic or selected_ml):
+    st.warning("Remove other selections if you choose 'None of these techniques is used'.")
+
+if tech_ml_selected and not selected_ml and not none_selected:
+    st.info("Select at least one machine learning technique or uncheck the option to continue.")
+    st.stop()
 
 answers["ai_techniques"] = {
+    "ml_selected": tech_ml_selected,
     "ml_techniques": selected_ml,
     "logic_knowledge_based": tech_logic,
     "none_selected": none_selected,
