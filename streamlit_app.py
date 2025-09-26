@@ -106,7 +106,7 @@ section_header(
     "This step allows you to confirm if your system uses AI Models, by checking if any of its components was developed using machine learning or logic-and knowledge based techniques.",
 )
 
-tech_ml_selected = st.checkbox("Machine Learning techniques")
+tech_ml_selected = st.checkbox("Yes, using Machine Learning techniques")
 selected_ml = []
 if tech_ml_selected:
     selected_ml = st.multiselect(
@@ -120,8 +120,8 @@ if tech_ml_selected:
         ],
     )
 
-tech_logic = st.checkbox("Logic‑ and Knowledge‑Based Techniques")
-none_selected = st.checkbox("None of these techniques is used")
+tech_logic = st.checkbox("Yes, using Logic‑ and Knowledge‑Based Techniques")
+none_selected = st.checkbox("No, None of these techniques was used")
 
 if none_selected and (tech_ml_selected or tech_logic or selected_ml):
     st.warning("Remove other selections if you choose 'None of these techniques is used'.")
@@ -144,7 +144,7 @@ if none_selected:
     decision_badge("Result", "Likely not an AI system")
     st.markdown(
         "- You selected **None of these techniques is used**.\n"
-        "- Without components developed using AI techniques, the solution is generally **not** an AI system."
+        "- Without components developed using AI techniques, a solution is generally **not considered** an AI system."
     )
     if selected_ml or tech_logic:
         st.markdown(
