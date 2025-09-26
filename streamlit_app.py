@@ -305,9 +305,6 @@ st.markdown(
             Work through a guided checklist aligned with the EU AI Act definition to understand whether your
             product is considered an AI system. Each step clarifies the rationale behind the classification and is captured for export.
         </p>
-        <div class="summary-hint">
-            Every decision you confirm will appear in the log below and can be downloaded as JSON or Markdown for your compliance records.
-        </div>
     </div>
     """,
     unsafe_allow_html=True,
