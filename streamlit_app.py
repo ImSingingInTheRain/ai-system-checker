@@ -211,8 +211,13 @@ st.divider()
 # -------- Final decision logic
 rationale = []
 if opt_only == "Yes" and all_conditions_true:
-    verdict = "Likely not an AI system"
-    rationale.append("Optimization‑only usage and **all** optimization carve‑out conditions satisfied.")
+    verdict = (
+        "Your solution is a borderline case. It likely falls outside the definition of AI system, "
+        "but it is advisable to seek legal advice to confirm this."
+    )
+    rationale.append(
+        "Optimization‑only usage and **all** optimization carve‑out conditions satisfied. Borderline case—seek legal advice."
+    )
 elif opt_only == "Yes" and not all_conditions_true:
     verdict = "AI system"
     rationale.append("Optimization‑only usage **but** not all carve‑out conditions satisfied.")
