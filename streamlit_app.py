@@ -753,6 +753,3 @@ render_decision_log()
 assessment = {"result": verdict, "rationale": rationale, "answers": answers, "decision_log": decision_log}
 export_assessment(assessment)
 
-st.caption(
-    "This tool reflects the decision structure in your illustration. For borderline cases, escalate for expert review and document assumptions."
-)
