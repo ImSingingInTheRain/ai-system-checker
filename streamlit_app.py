@@ -110,7 +110,7 @@ tech_ml_selected = st.checkbox("Yes, using Machine Learning techniques")
 selected_ml = []
 if tech_ml_selected:
     selected_ml = st.multiselect(
-        "Select the machine learning techniques used",
+        "Select the machine learning techniques used (optional)",
         options=[
             "Supervised Learning",
             "Unsupervised Learning",
@@ -126,10 +126,6 @@ none_selected = st.checkbox("No, None of these techniques was used")
 if none_selected and (tech_ml_selected or tech_logic or selected_ml):
     st.warning("Remove other selections if you choose 'None of these techniques is used'.")
 
-if tech_ml_selected and not selected_ml and not none_selected:
-    st.info("Select at least one machine learning technique or uncheck the option to continue.")
-    st.stop()
-
 answers["ai_techniques"] = {
     "ml_selected": tech_ml_selected,
     "ml_techniques": selected_ml,
@@ -138,7 +134,7 @@ answers["ai_techniques"] = {
 }
 
 has_any_selection = tech_ml_selected or tech_logic or none_selected
-uses_ai_techniques = (len(selected_ml) > 0) or tech_logic
+uses_ai_techniques = tech_ml_selected or tech_logic
 
 if none_selected:
     decision_badge("Result", "Likely not an AI system")
