@@ -167,7 +167,7 @@ st.divider()
 # -------- Step 3 — Optimization-only carve-out
 section_header(
     "Step 3 — Are AI models used **only for mathematical optimization / speed‑up**?",
-    "If yes, all the conditions below must hold to consider it likely **not** an AI system.",
+    "Mathematical optimization refers to the process of finding the best solution from a set of possible options by maximizing or minimizing a specific objective function, typically under defined constraints.",
 )
 
 opt_only = st.radio("Optimization-only usage?", options=["Yes", "No"], index=1, horizontal=True)
