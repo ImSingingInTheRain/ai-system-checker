@@ -68,6 +68,59 @@ def inject_custom_css():
             transition: background 0.2s ease;
         }
 
+        [data-testid="stCheckbox"] > label {
+            align-items: flex-start;
+            gap: 0.35rem;
+        }
+
+        .st-key-g_complex_predictions [data-testid="stCheckbox"],
+        .st-key-g_recommendations [data-testid="stCheckbox"],
+        .st-key-g_content [data-testid="stCheckbox"],
+        .st-key-g_decisions [data-testid="stCheckbox"] {
+            padding: 0.85rem 1rem;
+            border-radius: 14px;
+            border: 1px solid rgba(37, 99, 235, 0.15);
+            background: rgba(37, 99, 235, 0.05);
+            transition: border 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+            margin-bottom: 0.75rem;
+        }
+
+        .st-key-g_complex_predictions [data-testid="stCheckbox"]:hover,
+        .st-key-g_recommendations [data-testid="stCheckbox"]:hover,
+        .st-key-g_content [data-testid="stCheckbox"]:hover,
+        .st-key-g_decisions [data-testid="stCheckbox"]:hover {
+            border-color: rgba(37, 99, 235, 0.35);
+            background: rgba(37, 99, 235, 0.08);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.08);
+        }
+
+        .st-key-g_complex_predictions [data-testid="stCheckbox"] > label,
+        .st-key-g_recommendations [data-testid="stCheckbox"] > label,
+        .st-key-g_content [data-testid="stCheckbox"] > label,
+        .st-key-g_decisions [data-testid="stCheckbox"] > label {
+            gap: 0.25rem;
+        }
+
+        .st-key-g_complex_predictions [data-testid="stCheckbox"] > label p,
+        .st-key-g_recommendations [data-testid="stCheckbox"] > label p,
+        .st-key-g_content [data-testid="stCheckbox"] > label p,
+        .st-key-g_decisions [data-testid="stCheckbox"] > label p {
+            margin: 0;
+            font-size: 0.92rem;
+            color: var(--muted-text);
+            line-height: 1.55;
+        }
+
+        .st-key-g_complex_predictions [data-testid="stCheckbox"] > label p strong,
+        .st-key-g_recommendations [data-testid="stCheckbox"] > label p strong,
+        .st-key-g_content [data-testid="stCheckbox"] > label p strong,
+        .st-key-g_decisions [data-testid="stCheckbox"] > label p strong {
+            display: block;
+            font-size: 1rem;
+            color: var(--primary-text);
+            margin-bottom: 0.2rem;
+        }
+
         .stDownloadButton button {
             background: var(--accent);
             color: #fff;
@@ -183,6 +236,11 @@ def section_header(title, help_text=None):
     if help_text:
         with st.expander("What this means"):
             st.write(help_text)
+
+
+def generation_option(key, title, description):
+    label = f"**{title}**  \n{description}"
+    return st.checkbox(label, key=key)
 
 
 def export_assessment(assessment):
@@ -482,21 +540,25 @@ if step2_unable_to_verify:
         st.stop()
 
     st.markdown("Is the solution generating any of the following?")
-    g_complex_predictions = st.checkbox(
-        "Complex Predictions\nThe system generates estimates about an unknown value (the output) from known values supplied to the system (the input). It uncovers complex correlations between variables to make accurate predictions.",
-        key="g_complex_predictions",
+    g_complex_predictions = generation_option(
+        "g_complex_predictions",
+        "Complex predictions",
+        "The system generates estimates about an unknown value (the output) from known values supplied to the system (the input). It uncovers complex correlations between variables to make accurate predictions.",
     )
-    g_recommendations = st.checkbox(
-        "Recommendations\nThe system generates suggestions for specific actions, products, or services to users based on their preferences, behaviors, or other data inputs.",
-        key="g_recommendations",
+    g_recommendations = generation_option(
+        "g_recommendations",
+        "Recommendations",
+        "The system generates suggestions for specific actions, products, or services to users based on their preferences, behaviors, or other data inputs.",
     )
-    g_content = st.checkbox(
-        "Content\nThe system generates new material such as text, images, videos, and audio, using Generative Pre-trained Transformer (GPT) technologies, or other generative models, typically Large Language Models.",
-        key="g_content",
+    g_content = generation_option(
+        "g_content",
+        "Generative content",
+        "The system produces new material such as text, images, videos, or audio using Generative Pre-trained Transformer (GPT) technologies or other generative models, typically Large Language Models.",
     )
-    g_decisions = st.checkbox(
-        "Decisions\nThe system generates conclusions or choices that fully automate processes that are traditionally handled by human judgement. The decision is produced in the environment surrounding the system without any human intervention.",
-        key="g_decisions",
+    g_decisions = generation_option(
+        "g_decisions",
+        "Automated decisions",
+        "The system reaches conclusions or choices that fully automate processes traditionally handled by human judgement. The decision is produced in the environment surrounding the system without any human intervention.",
     )
     g_none = st.checkbox("None applies", key="g_none")
 
