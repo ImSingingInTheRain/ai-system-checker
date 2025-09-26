@@ -38,7 +38,7 @@ def export_json(assessment):
 
 
 # -------- App header
-st.title("What is an AI system? — Interactive Classifier")
+st.title("Is your solution an AI system? — Interactive Classifier")
 with st.expander("EU AI Act definition (for reference)"):
     st.write(
         "‘AI system’ means a machine-based system that is designed to operate with varying levels of autonomy "
@@ -88,7 +88,7 @@ non_ai_selected = any([c_basic, c_heur, c_simple_pred])
 if non_ai_selected:
     decision_badge("Result", "Likely not an AI system")
     st.markdown(
-        "- You indicated at least one NON‑AI category from your guidance.\n"
+        "- You indicated at least one NON‑AI category.\n"
         "- These solutions follow predefined human rules and do not infer outputs using AI models."
     )
     export_json({"result": "Likely not an AI system", "reason": "Selected NON-AI category", "answers": answers})
@@ -207,21 +207,6 @@ answers["optimization_conditions"] = conditions
 all_conditions_true = all(conditions.values()) if opt_only == "Yes" else False
 
 st.divider()
-
-# -------- Optional confirmation: inference & autonomy (informational)
-with st.expander("Optional confirmation: inference & autonomy (informational)"):
-    infers_outputs = st.checkbox(
-        "The solution infers how to generate outputs from inputs (predictions/content/recommendations/decisions).",
-        value=False,
-    )
-    varying_autonomy = st.checkbox(
-        "The solution operates with varying levels of autonomy (may require human in the loop).",
-        value=False,
-    )
-    answers["inference_autonomy"] = {
-        "infers_outputs": infers_outputs,
-        "varying_autonomy": varying_autonomy,
-    }
 
 # -------- Final decision logic
 rationale = []
