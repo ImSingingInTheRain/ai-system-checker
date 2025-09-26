@@ -55,14 +55,6 @@ if "answers" not in st.session_state:
 
 answers = st.session_state.answers
 
-# -------- Step 0 — Basic info
-st.subheader("Describe your solution (optional)")
-answers["solution_name"] = st.text_input("Solution / Project name", placeholder="e.g., HR Screening Helper")
-answers["owner"] = st.text_input("Your name / team", placeholder="e.g., People Analytics")
-answers["use_case"] = st.text_area("Brief intended use", placeholder="One sentence about what the solution does...")
-
-st.divider()
-
 # -------- Step 1 — Negative scope check (non‑AI categories)
 section_header(
     "Step 1 — Does your solution fall into any NON‑AI categories?",
@@ -112,6 +104,7 @@ section_header(
     "Select any techniques used to develop the model components within your solution.",
 )
 
+none_option = "None of these techniques is used"
 tech_ml = st.multiselect(
     "Machine Learning techniques",
     options=[
@@ -120,17 +113,38 @@ tech_ml = st.multiselect(
         "Self‑Supervised Learning",
         "Reinforcement Learning",
         "Deep Learning",
+        none_option,
     ],
 )
+
+none_selected = none_option in tech_ml
+selected_ml = [tech for tech in tech_ml if tech != none_option]
+
+if none_selected and selected_ml:
+    st.warning("Remove other selections if you choose 'None of these techniques is used'.")
 
 tech_logic = st.checkbox("Logic‑ and Knowledge‑Based Techniques")
 
 answers["ai_techniques"] = {
-    "ml_techniques": tech_ml,
+    "ml_techniques": selected_ml,
     "logic_knowledge_based": tech_logic,
+    "none_selected": none_selected,
 }
 
-uses_ai_techniques = (len(tech_ml) > 0) or tech_logic
+uses_ai_techniques = (len(selected_ml) > 0) or tech_logic
+
+if none_selected:
+    decision_badge("Result", "Likely not an AI system")
+    st.markdown(
+        "- You selected **None of these techniques is used**.\n"
+        "- Without components developed using AI techniques, the solution is generally **not** an AI system."
+    )
+    if selected_ml or tech_logic:
+        st.markdown(
+            "- Remove any other technique selections to avoid conflicting inputs."
+        )
+    export_json({"result": "Likely not an AI system", "reason": "Explicitly selected no AI techniques", "answers": answers})
+    st.stop()
 
 if not uses_ai_techniques:
     # If no AI techniques are used, then not an AI system (per slide flow)
