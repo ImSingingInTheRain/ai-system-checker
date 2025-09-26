@@ -137,6 +137,7 @@ answers["ai_techniques"] = {
     "none_selected": none_selected,
 }
 
+has_any_selection = tech_ml_selected or tech_logic or none_selected
 uses_ai_techniques = (len(selected_ml) > 0) or tech_logic
 
 if none_selected:
@@ -150,6 +151,10 @@ if none_selected:
             "- Remove any other technique selections to avoid conflicting inputs."
         )
     export_json({"result": "Likely not an AI system", "reason": "Explicitly selected no AI techniques", "answers": answers})
+    st.stop()
+
+if not has_any_selection:
+    st.info("Select an option to continue the assessment.")
     st.stop()
 
 if not uses_ai_techniques:
