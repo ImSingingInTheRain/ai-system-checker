@@ -39,8 +39,6 @@ def export_json(assessment):
 
 # -------- App header
 st.title("What is an AI system? — Interactive Classifier")
-st.caption("This interactive checklist follows the structure of your slide and aligns with the EU AI Act definition and decision logic.")
-
 with st.expander("EU AI Act definition (for reference)"):
     st.write(
         "‘AI system’ means a machine-based system that is designed to operate with varying levels of autonomy "
@@ -63,6 +61,7 @@ section_header(
 
 col1, col2 = st.columns(2)
 with col1:
+    c_none = st.checkbox("None applies", help="Select if none of the NON-AI categories below are relevant.")
     c_basic = st.checkbox(
         "Basic data processing tools",
         help="Operate on predefined human instructions; repetitive or rule-based; exactly as programmed.",
@@ -79,12 +78,16 @@ with col2:
     st.markdown("> If you select any of the above, you are **not providing an AI system**.")
 
 answers["non_ai_categories"] = {
+    "none_applies": c_none,
     "basic_data_processing_tools": c_basic,
     "classical_heuristic_based": c_heur,
     "simple_prediction_systems": c_simple_pred,
 }
 
 non_ai_selected = any([c_basic, c_heur, c_simple_pred])
+
+if c_none and non_ai_selected:
+    st.warning("'None applies' conflicts with selecting a NON-AI category. Please review your choices.")
 
 # Early exit option
 if non_ai_selected:
@@ -94,6 +97,10 @@ if non_ai_selected:
         "- These solutions follow predefined human rules and do not infer outputs using AI models."
     )
     export_json({"result": "Likely not an AI system", "reason": "Selected NON-AI category", "answers": answers})
+    st.stop()
+
+if not c_none:
+    st.info("Select 'None applies' to continue the assessment.")
     st.stop()
 
 st.divider()
